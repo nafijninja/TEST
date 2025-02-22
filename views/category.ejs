@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Category: <%= categories.find(c => c.id == products[0]?.category_id)?.name %></h1>
+    <a href="/">Home</a>
+    <div id="product-list">
+        <% products.forEach(product => { %>
+            <div class="product">
+                <img src="<%= product.image %>" alt="<%= product.name %>">
+                <h2><%= product.name %></h2>
+                <p><%= product.description %></p>
+                <p>Price: $<%= product.price %></p>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html
