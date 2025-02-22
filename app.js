@@ -120,6 +120,17 @@ app.use(session({
     saveUninitialized: true,
 }));
 
+const session = require('express-session');
+const SQLiteStore = require('connect-sqlite3')(session);
+
+app.use(session({
+  store: new SQLiteStore({ db: 'sessions.db' }), // Store sessions in an SQLite database
+  secret: 'your-secret-key', // Secret key to sign the session ID cookie
+  resave: false, // Don't save the session if it wasn't modified
+  saveUninitialized: true, // Save new sessions even if they are unmodified
+  cookie: { secure: false } // Set to true if using HTTPS
+}));
+
 // Multer setup for file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
