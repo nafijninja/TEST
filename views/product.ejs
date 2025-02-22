@@ -1,0 +1,85 @@
+<!-- product.ejs - Product details page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.name %> - Mobile Dokan</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1><%= product.name %></h1>
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/category/<%= product.category_id %>">Back to Category</a>
+    </nav>
+
+    <div class="product-details">
+        <img src="<%= product.image %>" alt="<%= product.name %>">
+        <p><strong>Description:</strong> <%= product.description %></p>
+        <p><strong>Price:</strong> $<%= product.price %></p>
+
+        <!-- Product Variants -->
+        <% if (variants.length > 0) { %>
+            <h2>Variants</h2>
+            <ul>
+                <% variants.forEach(variant => { %>
+                    <li>
+                        <strong><%= variant.name %></strong> - $<%= variant.price %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
+
+        <!-- Product Images Gallery -->
+        <% if (productImages.length > 0) { %>
+            <h2>Gallery</h2>
+            <div class="gallery">
+                <% productImages.forEach(image => { %>
+                    <img src="<%= image.image_url %>" alt="<%= product.name %>">
+                <% }) %>
+            </div>
+        <% } %>
+
+        <!-- Add to Wishlist -->
+        <form action="/wishlist/add" method="POST">
+            <input type="hidden" name="user_id" value="<%= user.id %>">
+            <input type="hidden" name="product_id" value="<%= product.id %>">
+            <button type="submit">Add to Wishlist</button>
+        </form>
+
+        <!-- Add Review -->
+        <h2>Add a Review</h2>
+        <form action="/review/add" method="POST">
+            <input type="hidden" name="product_id" value="<%= product.id %>">
+            <input type="hidden" name="user_id" value="<%= user.id %>">
+            <label for="rating">Rating:</label>
+            <select id="rating" name="rating" required>
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
+            </select><br>
+            <label for="comment">Comment:</label>
+            <textarea id="comment" name="comment" required></textarea><br>
+            <button type="submit">Submit Review</button>
+        </form>
+
+        <!-- Product Reviews -->
+        <% if (reviews.length > 0) { %>
+            <h2>Reviews</h2>
+            <ul>
+                <% reviews.forEach(review => { %>
+                    <li>
+                        <strong>Rating:</strong> <%= review.rating %>/5 <br>
+                        <strong>Comment:</strong> <%= review.comment %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No reviews yet. Be the first to review!</p>
+        <% } %>
+    </div>
+</body>
+</html
