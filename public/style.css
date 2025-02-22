@@ -1,19 +1,27 @@
+/* style.css - Main stylesheet */
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    background-color: #f9f9f9;
+    color: #333;
 }
 
-h1 {
-    color: #333;
+h1, h2, h3 {
+    color: #28a745;
 }
 
 form {
     margin-bottom: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 label {
     display: block;
     margin-top: 10px;
+    font-weight: bold;
 }
 
 input, textarea, select {
@@ -23,6 +31,7 @@ input, textarea, select {
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
 }
 
 button {
@@ -32,6 +41,7 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 button:hover {
@@ -50,9 +60,69 @@ button:hover {
     padding: 10px;
     width: 200px;
     text-align: center;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .product img {
     max-width: 100%;
     height: auto;
     border-radius: 5px;
+}
+
+#wishlist, #reviews, #notifications, #analytics {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#wishlist ul, #reviews ul, #notifications ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#wishlist li, #reviews li, #notifications li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+#wishlist li:last-child, #reviews li:last-child, #notifications li:last-child {
+    border-bottom: none;
+}
+
+#analytics canvas {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+nav {
+    margin-bottom: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #28a745;
+    margin-right: 10px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.upload-form {
+    margin-top: 20px;
+}
+
+.upload-form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.upload-form input[type="file"] {
+    padding: 5px;
+    }
