@@ -113,15 +113,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
-// Session setup (for admin login)
-app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: true,
-}));
-
-const session = require('express-session');
-const SQLiteStore = require('connect-sqlite3')(session);
 
 app.use(session({
   store: new SQLiteStore({ db: 'sessions.db' }), // Store sessions in an SQLite database
