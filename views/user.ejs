@@ -1,0 +1,95 @@
+<!-- user.ejs - User panel -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Panel - Mobile Dokan</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Welcome, <%= user.username %>!</h1>
+    <nav>
+        <a href="/">Home</a> |
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <!-- Wishlist Section -->
+    <h2>Your Wishlist</h2>
+    <div id="wishlist">
+        <% if (wishlist.length > 0) { %>
+            <ul>
+                <% wishlist.forEach(item => { %>
+                    <li>
+                        <strong><%= item.product_name %></strong> - $<%= item.price %>
+                        <a href="/product/<%= item.product_id %>">View Product</a>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>Your wishlist is empty.</p>
+        <% } %>
+    </div>
+
+    <!-- Reviews Section -->
+    <h2>Your Reviews</h2>
+    <div id="reviews">
+        <% if (reviews.length > 0) { %>
+            <ul>
+                <% reviews.forEach(review => { %>
+                    <li>
+                        <strong>Product:</strong> <%= review.product_name %> <br>
+                        <strong>Rating:</strong> <%= review.rating %>/5 <br>
+                        <strong>Comment:</strong> <%= review.comment %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>You haven’t reviewed any products yet.</p>
+        <% } %>
+    </div>
+
+    <!-- Notifications Section -->
+    <h2>Notifications</h2>
+    <div id="notifications">
+        <% if (notifications.length > 0) { %>
+            <ul>
+                <% notifications.forEach(notification => { %>
+                    <li>
+                        <strong><%= notification.message %></strong> - <%= notification.created_at %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No new notifications.</p>
+        <% } %>
+    </div>
+
+    <!-- Analytics Section -->
+    <h2>Your Activity</h2>
+    <div id="analytics">
+        <canvas id="analyticsChart"></canvas>
+        <script>
+            const ctx = document.getElementById('analyticsChart').getContext('2d');
+            const analyticsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Wishlist', 'Reviews', 'Orders'],
+                    datasets: [{
+                        label: 'Count',
+                        data: [<%= wishlist.length %>, <%= reviews.length %>, <%= orders.length %>],
+                        backgroundColor: ['#28a745', '#ffc107', '#17a2b8'],
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</body>
+</html
