@@ -197,6 +197,7 @@ app.get('/admin', async (req, res) => {
 });
 
 
+
 // Add Product (Admin)
 app.post('/admin/add-product', upload.single('image'), (req, res) => {
     const { name, price, description, category_id } = req.body;
