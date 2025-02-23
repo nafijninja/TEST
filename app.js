@@ -22,6 +22,16 @@ app.use(bodyParser.json()); // Parse JSON bodies
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Database initialization
+const db = new sqlite3.Database('./database.db', (err) => {
+  if (err) {
+    console.error('Database connection error:', err);
+  } else {
+    console.log('Connected to the database.');
+  }
+});
+
+
 
 // Create tables if they don't exist
 db.serialize(() => {
@@ -151,14 +161,6 @@ app.use(express.urlencoded({ extended: true }));
 // Session middleware
 // Database initialization
 
-// Database initialization
-const db = new sqlite3.Database('./database.db', (err) => {
-  if (err) {
-    console.error('Database connection error:', err);
-  } else {
-    console.log('Connected to the database.');
-  }
-});
 
 // Session middleware
 app.use(session({
