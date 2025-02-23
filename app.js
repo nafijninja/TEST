@@ -10,10 +10,6 @@ const multer = require('multer'); // For file uploads
 const fs = require('fs');
 const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
 
-//ejs template setup
-app.set('view engine', 'ejs');
-   app.set('views', path.join(__dirname, 'views'));
-
 
 // Environment-based cookie settings
 const isProduction = process.env.NODE_ENV === 'production'; // true in production, false in development
@@ -27,6 +23,12 @@ if (process.env.NODE_ENV === 'development') {
 
 // Initialize express app
 const app = express(); //app is initialized here
+
+//ejs template setup
+app.set('view engine', 'ejs');
+   app.set('views', path.join(__dirname, 'views'));
+app.use(express.json());
+   app.use(express.urlencoded({ extended: true }));
 
 // CORS middleware
 app.use(cors()); //Now app is defined, so this works
