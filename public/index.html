@@ -4,111 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wishlist Feature</title>
-  <style>
-    /* Basic styling */
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
-      background-color: #f4f4f9;
-    }
-
-    h1 {
-      color: #333;
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
-
-    button {
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    /* Message styling */
-    #message {
-      margin-top: 30px;
-      padding: 20px;
-      font-size: 1.2rem;
-      color: #fff;
-      background-color: #28a745;
-      border-radius: 10px;
-      display: inline-block;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    /* Animation for message */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Additional styles for a modern look */
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Footer styling */
-    footer {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      color: #666;
-    }
-
-    footer a {
-      color: #007bff;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Wishlist Feature</h1>
-    <button id="wishlistBtn">View Wishlist</button>
-    <button id="addToWishlistBtn">Add to Wishlist</button>
+  <h1>Wishlist Feature</h1>
+  <button id="wishlistBtn">View Wishlist</button>
+  <button id="addToWishlistBtn">Add to Wishlist</button>
 
-    <!-- Message will be displayed here -->
-    <div id="message"></div>
-  </div>
-
-  <footer>
-    Created by <a href="#" target="_blank">Nafij</a> | &copy; 2023
-  </footer>
+  <!-- Raw JSON response will be displayed here -->
+  <pre id="response"></pre>
 
   <script>
-    // Get message element
-    const messageElement = document.getElementById('message');
+    // Get response element
+    const responseElement = document.getElementById('response');
 
-    // Function to display the message
-    function showMessage(message) {
-      messageElement.textContent = message;
-      messageElement.style.display = 'block'; // Show the message
+    // Function to display the raw JSON response
+    function showResponse(response) {
+      responseElement.textContent = JSON.stringify(response, null, 2); // Pretty-print JSON
     }
 
     // Handle View Wishlist button click
@@ -116,7 +27,7 @@
       try {
         const response = await fetch('/wishlist');
         const data = await response.json();
-        showMessage(data.message); // Display the message on the page
+        showResponse(data); // Display the raw JSON response
       } catch (error) {
         console.error('Error:', error);
       }
@@ -133,11 +44,11 @@
           body: JSON.stringify({ item: 'Sample Item' }), // Replace with actual item data
         });
         const data = await response.json();
-        showMessage(data.message); // Display the message on the page
+        showResponse(data); // Display the raw JSON response
       } catch (error) {
         console.error('Error:', error);
       }
     });
   </script>
 </body>
-   </html>
+</html>
