@@ -144,20 +144,22 @@ app.get('/', async (req, res) => {
     res.render('index', { categories, products });
 });
 
-// Admin Login Page
+// Login route (GET)
 app.get('/login', (req, res) => {
-    res.render('login');
+  res.render('login'); // Render the login page
 });
 
-// Admin Login (POST)
+// Login route (POST)
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    if (username === 'admin' && password === 'admin123') { // Hardcoded for simplicity
-        req.session.admin = true;
-        res.redirect('/admin');
-    } else {
-        res.redirect('/login');
-    }
+  const { username, password } = req.body;
+
+  // Hardcoded credentials for testing
+  if (username === 'nafij' && password === 'nafijpro') {
+    req.session.user = { username: 'nafij' }; // Save user in session
+    res.redirect('/admin'); // Redirect to admin panel after successful login
+  } else {
+    res.redirect('/login'); // Redirect back to login page if credentials are invalid
+  }
 });
 
 // Admin Panel
