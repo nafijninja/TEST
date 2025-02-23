@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+   <html lang="en">
+   <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Wishlist Feature</title>
+     <style>
+       /* Basic styling */
+       body {
+         font-family: Arial, sans-serif;
+         text-align: center;
+         margin-top: 50px;
+       }
+
+       button {
+         padding: 10px 20px;
+         margin: 10px;
+         font-size: 16px;
+         cursor: pointer;
+         background-color: #007bff;
+         color: white;
+         border: none;
+         border-radius: 5px;
+       }
+
+       button:hover {
+         background-color: #0056b3;
+       }
+
+       /* Modal styling */
+       .modal {
+         display: none; /* Hidden by default */
+         position: fixed;
+         z-index: 1;
+         left: 0;
+         top: 0;
+         width: 100%;
+         height: 100%;
+         background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+       }
+
+       .modal-content {
+         background-color: #fff;
+         margin: 15% auto;
+         padding: 20px;
+         border: 1px solid #888;
+         width: 80%;
+         max-width: 400px;
+         text-align: center;
+         border-radius: 10px;
+         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+       }
+
+       #okButton {
+         padding: 10px 20px;
+         background-color: #007bff;
+         color: white;
+         border: none;
+         border-radius: 5px;
+         cursor: pointer;
+       }
+
+       #okButton:hover {
+         background-color: #0056b3;
+       }
+     </style>
+   </head>
+   <body>
+     <h1>Wishlist Feature</h1>
+     <button id="wishlistBtn">View Wishlist</button>
+     <button id="addToWishlistBtn">Add to Wishlist</button>
+
+     <!-- Modal Popup -->
+     <div id="popupModal" class="modal">
+       <div class="modal-content">
+         <p id="modalMessage"></p>
+         <button id="okButton">OK</button>
+       </div>
+     </div>
+
+     <script>
+       // Get modal and message elements
+       const modal = document.getElementById('popupModal');
+       const modalMessage = document.getElementById('modalMessage');
+       const okButton = document.getElementById('okButton');
+
+       // Function to show the modal with a message
+       function showPopup(message) {
+         modalMessage.textContent = message;
+         modal.style.display = 'block';
+       }
+
+       // Function to hide the modal
+       function hidePopup() {
+         modal.style.display = 'none';
+       }
+
+       // Handle View Wishlist button click
+       document.getElementById('wishlistBtn').addEventListener('click', async () => {
+         try {
+           const response = await fetch('/wishlist');
+           const data = await response.json();
+           showPopup(data.message);
+         } catch (error) {
+           console.error('Error:', error);
+         }
+       });
+
+       // Handle Add to Wishlist button click
+       document.getElementById('addToWishlistBtn').addEventListener('click', async () => {
+         try {
+           const response = await fetch('/wishlist/add', {
+             method: 'POST',
+             headers: {
+               'Content-Type': 'application/json',
+             },
+             body: JSON.stringify({ item: 'Sample Item' }), // Replace with actual item data
+           });
+           const data = await response.json();
+           showPopup(data.message);
+         } catch (error) {
+           console.error('Error:', error);
+         }
+       });
+
+       // Handle OK button click to close the modal
+       okButton.addEventListener('click', hidePopup);
+
+       // Close the modal if the user clicks outside of it
+       window.addEventListener('click', (event) => {
+         if (event.target === modal) {
+           hidePopup();
+         }
+       });
+     </script>
+   </body>
+   </html
