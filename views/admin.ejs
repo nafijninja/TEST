@@ -14,6 +14,26 @@
         <a href="/analytics">Analytics</a>
     </nav>
 
+    <!-- Add Category Form -->
+    <h2>Add Category</h2>
+    <form action="/admin/add-category" method="POST">
+        <label for="name">Category Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Add Category</button>
+    </form>
+
+    <!-- Delete Category Form -->
+    <h2>Delete Category</h2>
+    <form action="/admin/delete-category" method="POST">
+        <label for="category_id">Select Category to Delete:</label>
+        <select id="category_id" name="category_id" required>
+            <% categories.forEach(category => { %>
+                <option value="<%= category.id %>"><%= category.name %></option>
+            <% }) %>
+        </select>
+        <button type="submit">Delete Category</button>
+    </form>
+
     <!-- Add Product Form -->
     <h2>Add Product</h2>
     <form action="/admin/add-product" method="POST" enctype="multipart/form-data">
@@ -73,5 +93,11 @@
 
         <button type="submit">Add Image</button>
     </form>
+
+    <!-- Logout Button -->
+    <h2>Logout</h2>
+    <form action="/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
 </body>
-</html
+</html>
