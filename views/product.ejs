@@ -106,6 +106,18 @@
             </div>
         <% } %>
 
+<!-- Custom Sections -->
+<% if (specs && specs.length > 0) { %>
+  <h2>Specifications</h2>
+  <% specs.forEach(spec => { %>
+    <div class="spec-section">
+      <h3><%= spec.section_name %> 📸</h3>
+      <p><%= spec.section_value.replace(/\n/g, '<br>') %></p>
+      <hr> <!-- বিভাজক লাইন -->
+    </div>
+  <% }) %>
+<% } %>
+
         <!-- Add to Wishlist -->
         <h2>Add to Wishlist</h2>
         <form action="/wishlist/add" method="POST">
