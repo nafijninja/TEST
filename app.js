@@ -10,6 +10,10 @@ const multer = require('multer'); // For file uploads
 const fs = require('fs');
 const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
 
+//ejs template setup
+app.set('view engine', 'ejs');
+   app.set('views', path.join(__dirname, 'views'));
+
 
 // Environment-based cookie settings
 const isProduction = process.env.NODE_ENV === 'production'; // true in production, false in development
@@ -488,6 +492,58 @@ app.post('/logout', (req, res) => {
     }
   });
 });
+
+app.get('/analytics', async (req, res) => {
+     try {
+       // Fetch analytics data
+       const totalProducts = await new Promise((resolve, reject) => {
+         db.get('SELECT COUNT(*) AS total_products FROM products', (err, row) => {
+           if (err) reject(err);
+           else resolve(row.total_products);
+         });
+       });
+
+       const totalUsers = await new Promise((resolve, reject) => {
+         db.get('SELECT COUNT(*) AS total_users FROM users', (err, row) => {
+           if (err) reject(err);
+           else resolve(row.total_users);
+         });
+       });
+
+       const totalOrders = await new Promise((resolve, reject) => {
+         db.get('SELECT COUNT(*) AS total_orders FROM orders', (err, row) => {
+           if (err) reject(err);
+           else resolve(row.total_orders);
+         });
+       });
+
+       const popularProducts = await new Promise((resolve, reject) => {
+         db.all(`
+           SELECT products.name, COUNT(orders.product_id) AS order_count
+           FROM orders
+           JOIN products ON orders.product_id = products.id
+           GROUP BY orders.product_id
+           ORDER BY order_count DESC
+           LIMIT 5
+         `, (err, rows) => {
+           if (err) reject(err);
+           else resolve(rows);
+         });
+       });
+
+       // Render the analytics data using EJS
+       res.render('analytics', {
+         totalProducts,
+         totalUsers,
+         totalOrders,
+         popularProducts,
+       });
+     } catch (err) {
+       console.error(err);
+       res.status(500).send('Internal Server Error');
+     }
+   });
+      
 // Start server
 const PORT = 3000; // Explicitly set the port to 3000
 app.listen(PORT, () => {
