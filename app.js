@@ -10,7 +10,7 @@ const SQLiteStore = require('connect-sqlite3')(session); // Correct initializati
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
+const isProduction = process.env.NODE_ENV === 'production' || false; // ডিফল্ট হিসেবে false সেট করুন
 
 // app.js - Database initialization
 const db = new sqlite3.Database('./database.db');
