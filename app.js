@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'development') {
   // ডেভেলপমেন্ট মোডের জন্য অতিরিক্ত সেটআপ
 } else {
   console.log('Running in production mode');
-
+}
 // Initialize express app
 const app = express();
 
