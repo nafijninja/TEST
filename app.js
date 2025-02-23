@@ -29,6 +29,8 @@ app.set('view engine', 'ejs');
    app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
    app.use(express.urlencoded({ extended: true }));
+//Serve static file
+   app.use(express.static('public'));
 
 // CORS middleware
 app.use(cors()); //Now app is defined, so this works
