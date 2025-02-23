@@ -421,7 +421,15 @@ app.get('/product/:id', async (req, res) => {
       else resolve(rows);
     });
   });
+ // Fetch reviews
+  const reviews = await new Promise((resolve, reject) => {
+    db.all('SELECT * FROM reviews WHERE product_id = ?', [productId], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
 
+  
   res.render('product', { product, images, variants });
 });
 
