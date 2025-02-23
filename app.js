@@ -1,4 +1,5 @@
 // app.js - Main application file
+require('dotenv').config(); 
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
@@ -11,6 +12,12 @@ const PORT = process.env.PORT || 3000;
 
 // Environment-based cookie settings
 const isProduction = process.env.NODE_ENV === 'production'; // true in production, false in development
+// NODE_ENV এর মান যাচাই করুন
+if (process.env.NODE_ENV === 'development') {
+  console.log('Running in development mode');
+  // ডেভেলপমেন্ট মোডের জন্য অতিরিক্ত সেটআপ
+} else {
+  console.log('Running in production mode');
 
 // Initialize express app
 const app = express();
