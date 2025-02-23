@@ -165,16 +165,7 @@ app.post('/admin/add-spec', (req, res) => {
   );
 });
 
-// Fetch custom sections
-const specs = await new Promise((resolve, reject) => {
-  db.all('SELECT * FROM product_specs WHERE product_id = ?', [productId], (err, rows) => {
-    if (err) reject(err);
-    else resolve(rows);
-  });
-});
-
-res.render('product', { product, productImages, variants, reviews, specs, user: req.session.user });
-
+vv
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
