@@ -55,6 +55,13 @@ This project uses environment variables to manage configuration settings for dif
    ```env
    NODE_ENV=development
 
-    #### For Development:
+### Setting Up Environment Variables
+
+1. **Create a `.env` file:**
+   Create a `.env` file in the root directory of your project.
+
+2. **Add the following variables:**
+
+   #### For Production:
    ```env
-  NODE_ENV=production
+   NODE_ENV=production
