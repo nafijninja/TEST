@@ -137,8 +137,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-// Environment-based cookie settings
-const isProduction = process.env.NODE_ENV === 'production';
 
 // Session middleware
 app.use(session({
