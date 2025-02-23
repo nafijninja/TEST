@@ -1,7 +1,7 @@
 {
   "name": "mobile-dokan",
   "version": "1.0.0",
-  "description": "E-commerce platform for mobile devices - Developed by NAFIJ (Owner)",
+  "description": "E-commerce platform for mobile devices - Developed by NAFIJ ✅(Owner)",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
