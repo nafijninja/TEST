@@ -379,6 +379,75 @@ app.post('/logout', (req, res) => {
   });
 });
 
+// Delete Product (Admin)
+app.post('/admin/delete-product', (req, res) => {
+  const { product_id } = req.body;
+
+  db.run('DELETE FROM products WHERE id = ?', [product_id], (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.redirect('/admin');
+    }
+  });
+});
+
+
+// Product Detail Page
+app.get('/product/:id', async (req, res) => {
+  const productId = req.params.id;
+
+  // Fetch product details
+  const product = await new Promise((resolve, reject) => {
+    db.get('SELECT * FROM products WHERE id = ?', [productId], (err, row) => {
+      if (err) reject(err);
+      else resolve(row);
+    });
+  });
+
+  // Fetch additional images
+  const images = await new Promise((resolve, reject) => {
+    db.all('SELECT * FROM product_images WHERE product_id = ?', [productId], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+
+  // Fetch variants
+  const variants = await new Promise((resolve, reject) => {
+    db.all('SELECT * FROM variants WHERE product_id = ?', [productId], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+
+  res.render('product', { product, images, variants });
+});
+
+// Category Detail Page
+app.get('/category/:id', async (req, res) => {
+  const categoryId = req.params.id;
+
+  // Fetch category details
+  const category = await new Promise((resolve, reject) => {
+    db.get('SELECT * FROM categories WHERE id = ?', [categoryId], (err, row) => {
+      if (err) reject(err);
+      else resolve(row);
+    });
+  });
+
+  // Fetch products in this category
+  const products = await new Promise((resolve, reject) => {
+    db.all('SELECT * FROM products WHERE category_id = ?', [categoryId], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+
+  res.render('category', { category, products });
+});
+    
 // Start server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
