@@ -379,22 +379,7 @@ app.post('/logout', (req, res) => {
   });
 });
 
-// Delete Product (Admin)
-app.post('/admin/delete-product', (req, res) => {
-  const { product_id } = req.body;
-
-  db.run('DELETE FROM products WHERE id = ?', [product_id], (err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Internal Server Error');
-    } else {
-      res.redirect('/admin');
-    }
-  });
-});
-
-
-// Product Detail Page
+// Product Detail Route
 app.get('/product/:id', async (req, res) => {
   const productId = req.params.id;
 
@@ -407,7 +392,7 @@ app.get('/product/:id', async (req, res) => {
   });
 
   // Fetch additional images
-  const images = await new Promise((resolve, reject) => {
+  const productImages = await new Promise((resolve, reject) => {
     db.all('SELECT * FROM product_images WHERE product_id = ?', [productId], (err, rows) => {
       if (err) reject(err);
       else resolve(rows);
@@ -421,7 +406,8 @@ app.get('/product/:id', async (req, res) => {
       else resolve(rows);
     });
   });
- // Fetch reviews
+
+  // Fetch reviews
   const reviews = await new Promise((resolve, reject) => {
     db.all('SELECT * FROM reviews WHERE product_id = ?', [productId], (err, rows) => {
       if (err) reject(err);
@@ -429,8 +415,8 @@ app.get('/product/:id', async (req, res) => {
     });
   });
 
-  
-  res.render('product', { product, images, variants });
+  // Render the product.ejs template with all data
+  res.render('product', { product, productImages, variants, reviews, user: req.session.user });
 });
 
 // Category Detail Page
