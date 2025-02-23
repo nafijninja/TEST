@@ -108,21 +108,7 @@ db.serialize(() => {
   `);
 });
 
-// Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('view engine', 'ejs');
 
-
-
-// Session middleware
-app.use(session({
-  store: new SQLiteStore({ db: 'sessions.db' }), // Use SQLiteStore
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true } // Set to true if using HTTPS
-}));
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
@@ -145,6 +131,26 @@ app.get('/', async (req, res) => {
 });
 
 
+
+// Middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+
+// Environment-based cookie settings
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Session middleware
+app.use(session({
+  store: new SQLiteStore({ db: 'sessions.db' }),
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { 
+    secure: isProduction // Set to true only in production (HTTPS)
+  }
+}));
+
 // Login route (GET)
 app.get('/login', (req, res) => {
   res.render('login');
@@ -157,8 +163,10 @@ app.post('/login', (req, res) => {
   if (username === 'nafij' && password === 'nafijpro') {
     req.session.user = { username: 'nafij' };
     console.log('Session after login:', req.session); // Debug session
+    console.log('Set-Cookie Header:', res.getHeaders()['set-cookie']); // Debug cookie
     res.redirect('/admin');
   } else {
+    console.log('Invalid credentials. Redirecting to /login.'); // Debug invalid credentials
     res.redirect('/login');
   }
 });
@@ -166,6 +174,7 @@ app.post('/login', (req, res) => {
 // Admin route
 app.get('/admin', (req, res) => {
   console.log('Session in /admin:', req.session); // Debug session
+  console.log('Cookies:', req.headers.cookie); // Debug cookies
   if (!req.session.user) {
     console.log('User not logged in. Redirecting to /login.'); // Debug redirect
     return res.redirect('/login');
