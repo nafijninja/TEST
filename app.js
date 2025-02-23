@@ -18,8 +18,6 @@ const app = express();
 // Middleware setup
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(bodyParser.json()); // Parse JSON bodies
-app.set('view engine', 'ejs');
-
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -151,19 +149,24 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+app.use(express.urlencoded({ extended: true }));
+     app.use(express.static('public'));
+     app.set('view engine', 'ejs');
+     // Ensure no missing braces or parentheses in the rest of the file
 
 // Session middleware
 // Database initialization
 
 app.use(session({
-  store: new SQLiteStore({ db: 'sessions.db' }),
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { 
-    secure: isProduction, // Set to true only in production (HTTPS)
-  }
-}));
+     store: new SQLiteStore({ db: 'sessions.db' }),
+     secret: 'your-secret-key',
+     resave: false,
+     saveUninitialized: true,
+     cookie: { 
+       secure: isProduction,
+       maxAge: 1000 * 60 * 60 * 24
+     }
+   })); // Added missing closing braces
 
 // Helper functions
 function getCategories() {
