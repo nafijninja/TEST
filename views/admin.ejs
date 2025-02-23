@@ -88,6 +88,19 @@
             <% }) %>
         </select><br>
 
+<!-- Delete Product Form -->
+<h2>Delete Product</h2>
+<form action="/admin/delete-product" method="POST">
+  <label for="product_id">Select Product to Delete:</label>
+  <select id="product_id" name="product_id" required>
+    <% products.forEach(product => { %>
+      <option value="<%= product.id %>"><%= product.name %></option>
+    <% }) %>
+  </select>
+  <button type="submit">Delete Product</button>
+</form>
+
+
         <label for="image_url">Image:</label>
         <input type="file" id="image_url" name="image_url" required><br>
 
