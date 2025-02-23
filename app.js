@@ -118,7 +118,42 @@ db.serialize(() => {
     )
   `);
 });
+//product specifications.
+CREATE TABLE IF NOT EXISTS product_specs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  product_id INTEGER,
+  section_name TEXT,
+  section_value TEXT,
+  FOREIGN KEY (product_id) REFERENCES products(id)
+);
 
+// Add Custom Section (Admin)
+app.post('/admin/add-spec', (req, res) => {
+  const { product_id, section_name, section_value } = req.body;
+
+  db.run(
+    'INSERT INTO product_specs (product_id, section_name, section_value) VALUES (?, ?, ?)',
+    [product_id, section_name, section_value],
+    (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+      } else {
+        res.redirect('/admin');
+      }
+    }
+  );
+});
+
+// Fetch custom sections
+const specs = await new Promise((resolve, reject) => {
+  db.all('SELECT * FROM product_specs WHERE product_id = ?', [productId], (err, rows) => {
+    if (err) reject(err);
+    else resolve(rows);
+  });
+});
+
+res.render('product', { product, productImages, variants, reviews, specs, user: req.session.user });
 
 
 // Multer setup for file uploads
