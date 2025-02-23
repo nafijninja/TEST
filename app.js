@@ -14,9 +14,7 @@ const PORT = process.env.PORT || 3000;
 // Environment-based cookie settings
 const isProduction = process.env.NODE_ENV === 'production'; // true in production, false in development
 
-// Database initialization
-const db = new sqlite3.Database('./database.db');
-
+  
 // Create tables if they don't exist
 db.serialize(() => {
   db.run(`
@@ -143,13 +141,34 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 // Session middleware
+// Database initialization
+const db = new sqlite3.Database('./database.db');
+
+app.use(express.static('public', { maxAge: 86400000 })); // Cache for 1 day
+
+const db = new sqlite3.Database('./database.db', (err) => {
+  if (err) {
+    console.error('Database connection error:', err);
+  } else {
+    console.log('Connected to the database.');
+  }
+});
+
+// Keep the connection alive
+setInterval(() => {
+  db.run('SELECT 1', (err) => {
+    if (err) console.error('Database ping error:', err);
+  });
+}, 60 * 1000); // Ping every 60 seconds
+
 app.use(session({
   store: new SQLiteStore({ db: 'sessions.db' }),
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: true,
   cookie: { 
-    secure: isProduction // Set to true only in production (HTTPS)
+    secure: isProduction, // Set to true only in production (HTTPS)
+    maxAge: 1000 * 60 * 60 * 24 // 1 day (increase as needed)
   }
 }));
 
