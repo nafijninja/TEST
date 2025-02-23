@@ -325,6 +325,60 @@ function getProducts() {
     });
 }
 
+// Add Category (Admin)
+app.post('/admin/add-category', (req, res) => {
+  const { name } = req.body;
+
+  db.run('INSERT INTO categories (name) VALUES (?)', [name], (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.redirect('/admin');
+    }
+  });
+});
+
+// Delete Product (Admin)
+app.post('/admin/delete-product', (req, res) => {
+  const { product_id } = req.body;
+
+  db.run('DELETE FROM products WHERE id = ?', [product_id], (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.redirect('/admin');
+    }
+  });
+});
+
+// Delete Category (Admin)
+app.post('/admin/delete-category', (req, res) => {
+  const { category_id } = req.body;
+
+  db.run('DELETE FROM categories WHERE id = ?', [category_id], (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.redirect('/admin');
+    }
+  });
+});
+
+// Logout (Admin)
+app.post('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.redirect('/login'); // লগইন পেজে রিডাইরেক্ট করুন
+    }
+  });
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
