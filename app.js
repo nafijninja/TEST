@@ -9,8 +9,7 @@ const path = require('path');
 const multer = require('multer'); // For file uploads
 const fs = require('fs');
 const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
- // CORS middleware
-   app.use(cors());
+
 
 // Environment-based cookie settings
 const isProduction = process.env.NODE_ENV === 'production'; // true in production, false in development
@@ -21,8 +20,13 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   console.log('Running in production mode');
 }
+
 // Initialize express app
-const app = express();
+const app = express(); //app is initialized here
+
+// CORS middleware
+app.use(cors()); //Now app is defined, so this works
+
 
 // Middleware setup
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
