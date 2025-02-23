@@ -22,13 +22,7 @@ app.use(bodyParser.json()); // Parse JSON bodies
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Initialize database connection
-const db = new sqlite3.Database('./database.db', (err) => {
-  if (err) {
-    console.error('Database connection error:', err);
-  } else {
-    console.log('Connected to the database.');
-  
+
 // Create tables if they don't exist
 db.serialize(() => {
   db.run(`
@@ -157,17 +151,26 @@ app.use(express.urlencoded({ extended: true }));
 // Session middleware
 // Database initialization
 
-app.use(session({
-     store: new SQLiteStore({ db: 'sessions.db' }),
-     secret: 'your-secret-key',
-     resave: false,
-     saveUninitialized: true,
-     cookie: { 
-       secure: isProduction,
-       maxAge: 1000 * 60 * 60 * 24
-     }
-   })); // Added missing closing braces
+// Database initialization
+const db = new sqlite3.Database('./database.db', (err) => {
+  if (err) {
+    console.error('Database connection error:', err);
+  } else {
+    console.log('Connected to the database.');
+  }
+});
 
+// Session middleware
+app.use(session({
+  store: new SQLiteStore({ db: 'sessions.db' }),
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { 
+    secure: isProduction,
+    maxAge: 1000 * 60 * 60 * 24
+  }
+}));
 // Helper functions
 function getCategories() {
   return new Promise((resolve, reject) => {
