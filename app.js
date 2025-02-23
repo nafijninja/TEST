@@ -7,8 +7,7 @@ const path = require('path');
 const multer = require('multer'); // For file uploads
 const fs = require('fs');
 const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
-const app = express();
-app.use(express.static('public'));
+const app = express();app.use(express.static('public', { maxAge: 86400000 })); // Cache for 1 day
 const PORT = process.env.PORT || 3000;
 
 // Environment-based cookie settings
@@ -142,9 +141,8 @@ app.set('view engine', 'ejs');
 
 // Session middleware
 // Database initialization
-const db = new sqlite3.Database('./database.db');
 
-app.use(express.static('public', { maxAge: 86400000 })); // Cache for 1 day
+
 
 const db = new sqlite3.Database('./database.db', (err) => {
   if (err) {
