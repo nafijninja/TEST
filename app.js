@@ -545,7 +545,10 @@ app.get('/analytics', async (req, res) => {
        res.status(500).send('Internal Server Error');
      }
    });
-      
+
+app.get('/wishlist', (req, res) => {      res.status(200).json({ message: 'Wishlist is coming soon CREATED BY NAFIJ PRO !' });    });     // Route for /wishlist/add    
+app.post('/wishlist/add', (req, res) => {      res.status(200).json({ message: 'Wishlist is coming soon CREATED BY NAFIJ PRO !' });    });  
+        
 // Start server
 const PORT = 3000; // Explicitly set the port to 3000
 app.listen(PORT, () => {
