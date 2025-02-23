@@ -129,7 +129,6 @@ db.serialize(() => {
       FOREIGN KEY (product_id) REFERENCES products(id)
     )
   `);
-);
 
 db.run(`
   CREATE TABLE IF NOT EXISTS product_specs (
