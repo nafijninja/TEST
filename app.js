@@ -182,7 +182,22 @@ app.get('/admin', (req, res) => {
   res.render('admin', { user: req.session.user });
 });
 
+function getCategories() {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM categories', (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+           }
 
+
+  // Fetch categories from the database
+  const categories = await getCategories();
+
+  // Pass categories to the template
+  res.render('admin', { categories });
+});
 
 // Add Product (Admin)
 app.post('/admin/add-product', upload.single('image'), (req, res) => {
