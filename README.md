@@ -39,3 +39,22 @@ This project is designed and developed by **ÑÄFĪJ**. It is a simple yet power
 ---
 
 ## **File Structure*
+
+## Environment Configuration
+
+This project uses environment variables to manage configuration settings for different environments (development and production). The environment variables are stored in a `.env` file.
+
+### Setting Up Environment Variables
+
+1. **Create a `.env` file:**
+   Create a `.env` file in the root directory of your project.
+
+2. **Add the following variables:**
+
+   #### For Development:
+   ```env
+   NODE_ENV=development
+
+    #### For Development:
+   ```env
+  NODE_ENV=production
