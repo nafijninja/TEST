@@ -179,27 +179,22 @@ app.post('/login', (req, res) => {
     res.redirect('/login');
   }
 });
-
-// Admin route
-app.get('/admin', (req, res) => {
+//admin route
+app.get('/admin', async (req, res) => {
   console.log('Session in /admin:', req.session); // Debug session
   console.log('Cookies:', req.headers.cookie); // Debug cookies
   if (!req.session.user) {
     console.log('User not logged in. Redirecting to /login.'); // Debug redirect
     return res.redirect('/login');
   }
-  res.render('admin', { user: req.session.user });
-});
-
-
-
 
   // Fetch categories from the database
   const categories = await getCategories();
 
-  // Pass categories to the template
-  res.render('admin', { categories });
+  // Pass categories and user to the template
+  res.render('admin', { categories, user: req.session.user });
 });
+
 
 // Add Product (Admin)
 app.post('/admin/add-product', upload.single('image'), (req, res) => {
