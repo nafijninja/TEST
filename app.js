@@ -1,5 +1,6 @@
 // app.js - Main application file
 require('dotenv').config(); 
+const cors = require('cors');
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
@@ -8,9 +9,9 @@ const path = require('path');
 const multer = require('multer'); // For file uploads
 const fs = require('fs');
 const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
-const PORT = 3000; //PORT
-const cors = require('cors');
-     app.use(cors());
+ // CORS middleware
+   app.use(cors());
+
 // Environment-based cookie settings
 const isProduction = process.env.NODE_ENV === 'production'; // true in production, false in development
 // NODE_ENV এর মান যাচাই করুন
