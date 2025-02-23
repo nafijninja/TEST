@@ -415,6 +415,24 @@ app.get('/category/:id', async (req, res) => {
   }
 });
 
+// Reviews (User)
+app.post('/review/add', (req, res) => {
+  const { product_id, user_id, rating, comment } = req.body;
+
+  db.run(
+    'INSERT INTO reviews (product_id, user_id, rating, comment) VALUES (?, ?, ?, ?)',
+    [product_id, user_id, rating, comment],
+    (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+      } else {
+        res.redirect(`/product/${product_id}`);
+      }
+    }
+  );
+});
+    
 // Logout (Admin)
 app.post('/logout', (req, res) => {
   req.session.destroy((err) => {
