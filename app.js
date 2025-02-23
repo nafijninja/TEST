@@ -502,59 +502,171 @@ app.post('/logout', (req, res) => {
   });
 });
 
+// Product Detail Route
+app.get('/product/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
 
+    // Fetch product details
+    const product = await new Promise((resolve, reject) => {
+      db.get('SELECT * FROM products WHERE id = ?', [productId], (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+      });
+    });
 
-  // Fetch additional images
-  const productImages = await new Promise((resolve, reject) => {
+    // Fetch additional images
+    const productImages = await new Promise((resolve, reject) => {
+      db.all('SELECT * FROM product_images WHERE product_id = ?', [productId], (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      });
+    });
+
+    // Fetch variants
+    const variants = await new Promise((resolve, reject) => {
+      db.all('SELECT * FROM variants WHERE product_id = ?', [productId], (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      });
+    });
+
+    // Fetch reviews
+    const reviews = await new Promise((resolve, reject) => {
+      db.all('SELECT * FROM reviews WHERE product_id = ?', [productId], (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      });
+    });
+
+    // Render the product.ejs template with all data
+    res.render('product', { product, productImages, variants, reviews, user: req.session.user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Category Detail Route
+app.get('/category/:id', async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+
+    // Fetch category details
+    const category = await new Promise((resolve, reject) => {
+      db.get('SELECT * FROM categories WHERE id = ?', [categoryId], (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+      });
+    });
+
+    // Fetch products in this category
+    const products = await new Promise((resolve, reject) => {
+      db.all('SELECT * FROM products WHERE category_id = ?', [categoryId], (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      });
+    });
+
+    res.render('category', { category, products });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// Helper function to get product details
+function getProduct(productId) {
+  return new Promise((resolve, reject) => {
+    db.get('SELECT * FROM products WHERE id = ?', [productId], (err, row) => {
+      if (err) reject(err);
+      else resolve(row);
+    });
+  });
+}
+
+// Helper function to get product images
+function getProductImages(productId) {
+  return new Promise((resolve, reject) => {
     db.all('SELECT * FROM product_images WHERE product_id = ?', [productId], (err, rows) => {
       if (err) reject(err);
       else resolve(rows);
     });
   });
+}
 
-  // Fetch variants
-  const variants = await new Promise((resolve, reject) => {
+// Helper function to get product variants
+function getProductVariants(productId) {
+  return new Promise((resolve, reject) => {
     db.all('SELECT * FROM variants WHERE product_id = ?', [productId], (err, rows) => {
       if (err) reject(err);
       else resolve(rows);
     });
   });
+}
 
-  // Fetch reviews
-  const reviews = await new Promise((resolve, reject) => {
+// Helper function to get product reviews
+function getProductReviews(productId) {
+  return new Promise((resolve, reject) => {
     db.all('SELECT * FROM reviews WHERE product_id = ?', [productId], (err, rows) => {
       if (err) reject(err);
       else resolve(rows);
     });
   });
+}
 
-  // Render the product.ejs template with all data
-  res.render('product', { product, productImages, variants, reviews, user: req.session.user });
-});
-
-// Category Detail Page
-app.get('/category/:id', async (req, res) => {
-  const categoryId = req.params.id;
-
-  // Fetch category details
-  const category = await new Promise((resolve, reject) => {
+// Helper function to get category details
+function getCategory(categoryId) {
+  return new Promise((resolve, reject) => {
     db.get('SELECT * FROM categories WHERE id = ?', [categoryId], (err, row) => {
       if (err) reject(err);
       else resolve(row);
     });
   });
+}
 
-  // Fetch products in this category
-  const products = await new Promise((resolve, reject) => {
+// Helper function to get products in a category
+function getProductsByCategory(categoryId) {
+  return new Promise((resolve, reject) => {
     db.all('SELECT * FROM products WHERE category_id = ?', [categoryId], (err, rows) => {
       if (err) reject(err);
       else resolve(rows);
     });
   });
+}
 
-  res.render('category', { category, products });
+// Product Detail Route
+app.get('/product/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    const product = await getProduct(productId);
+    const productImages = await getProductImages(productId);
+    const variants = await getProductVariants(productId);
+    const reviews = await getProductReviews(productId);
+
+    res.render('product', { product, productImages, variants, reviews, user: req.session.user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
-    
+
+// Category Detail Route
+app.get('/category/:id', async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+
+    const category = await getCategory(categoryId);
+    const products = await getProductsByCategory(categoryId);
+
+    res.render('category', { category, products });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
