@@ -6,7 +6,7 @@ const session = require('express-session');
 const path = require('path');
 const multer = require('multer'); // For file uploads
 const fs = require('fs');
-
+const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
 const app = express();
 const PORT = process.env.PORT || 3000;
 
