@@ -362,23 +362,38 @@ app.get('/analytics', async (req, res) => {
 });
 
 // Helper functions
-function getCategories() {
-    return new Promise((resolve, reject) => {
-        db.all('SELECT * FROM categories', (err, rows) => {
-            if (err) reject(err);
-            else resolve(rows);
-        });
+function getProduct(productId) {
+  return new Promise((resolve, reject) => {
+    db.get('SELECT * FROM products WHERE id = ?', [productId], (err, row) => {
+      if (err) reject(err);
+      else resolve(row);
     });
+  });
 }
 
-function getProducts() {
-    return new Promise((resolve, reject) => {
-        db.all('SELECT * FROM products', (err, rows) => {
-            if (err) reject(err);
-            else resolve(rows);
-        });
+function getProductSpecs(productId) {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM product_specs WHERE product_id = ?', [productId], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
     });
+  });
 }
+
+// Product Detail Route
+app.get('/product/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    const product = await getProduct(productId);
+    const specs = await getProductSpecs(productId);
+
+    res.render('product', { product, specs });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 // Add Category (Admin)
 app.post('/admin/add-category', (req, res) => {
@@ -434,17 +449,7 @@ app.post('/logout', (req, res) => {
   });
 });
 
-// Product Detail Route
-app.get('/product/:id', async (req, res) => {
-  const productId = req.params.id;
 
-  // Fetch product details
-  const product = await new Promise((resolve, reject) => {
-    db.get('SELECT * FROM products WHERE id = ?', [productId], (err, row) => {
-      if (err) reject(err);
-      else resolve(row);
-    });
-  });
 
   // Fetch additional images
   const productImages = await new Promise((resolve, reject) => {
