@@ -121,7 +121,7 @@ app.use(session({
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Set to true if using HTTPS
+  cookie: { secure: true } // Set to true if using HTTPS
 }));
 
 // Multer setup for file uploads
@@ -167,6 +167,7 @@ app.post('/login', (req, res) => {
 app.get('/admin', (req, res) => {
   console.log('Session in /admin:', req.session); // Debug session
   if (!req.session.user) {
+    console.log('User not logged in. Redirecting to /login.'); // Debug redirect
     return res.redirect('/login');
   }
   res.render('admin', { user: req.session.user });
