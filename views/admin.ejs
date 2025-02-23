@@ -112,5 +112,11 @@
     <form action="/logout" method="POST">
         <button type="submit">Logout</button>
     </form>
+
+<% if (error) { %>
+  <div class="error-message">
+    <%= error %>
+  </div>
+<% } %>
 </body>
 </html>
