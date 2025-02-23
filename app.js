@@ -545,10 +545,72 @@ app.get('/analytics', async (req, res) => {
      }
    });
 
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
-app.get('/wishlist', (req, res) => {      res.status(200).json({ message: 'Wishlist is coming soon CREATED BY NAFIJ PRO !' });    });     // Route for /wishlist/add    
-app.post('/wishlist/add', (req, res) => {      res.status(200).json({ message: 'Wishlist is coming soon CREATED BY NAFIJ PRO !' });    });  
+
+// Route for /wishlist (returns inline HTML)
+app.get('/wishlist', (req, res) => {
+  const htmlResponse = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Wishlist</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          margin-top: 50px;
+        }
+        h1 {
+          color: #007bff;
+        }
+        p {
+          font-size: 1.2rem;
+          color: #333;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Wishlist Feature</h1>
+      <p>Wishlist is coming soon <strong>CREATED BY NAFIJ PRO!</strong></p>
+    </body>
+    </html>
+  `;
+  res.status(200).send(htmlResponse); // Send inline HTML
+});
+
+// Route for /wishlist/add (returns inline HTML)
+app.post('/wishlist/add', (req, res) => {
+  const htmlResponse = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Wishlist Add</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          margin-top: 50px;
+        }
+        h1 {
+          color: #28a745;
+        }
+        p {
+          font-size: 1.2rem;
+          color: #333;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Wishlist Add Feature</h1>
+      <p>Wishlist is coming soon <strong>CREATED BY NAFIJ PRO!</strong></p>
+    </body>
+    </html>
+  `;
+  res.status(200).send(htmlResponse); // Send inline HTML
+});
         
 // Start server
 const PORT = 3000; // Explicitly set the port to 3000
