@@ -144,31 +144,35 @@ app.get('/', async (req, res) => {
     res.render('index', { categories, products });
 });
 
+
 // Login route (GET)
 app.get('/login', (req, res) => {
-  res.render('login'); // Render the login page
+  res.render('login');
 });
 
 // Login route (POST)
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
-  // Hardcoded credentials for testing
   if (username === 'nafij' && password === 'nafijpro') {
-    req.session.user = { username: 'nafij' }; // Save user in session
-    res.redirect('/admin'); // Redirect to admin panel after successful login
+    req.session.user = { username: 'nafij' };
+    console.log('Session after login:', req.session); // Debug session
+    res.redirect('/admin');
   } else {
-    res.redirect('/login'); // Redirect back to login page if credentials are invalid
+    res.redirect('/login');
   }
 });
 
-// Admin Panel
+// Admin route
 app.get('/admin', (req, res) => {
-    if (!req.session.admin) {
-        return res.redirect('/login');
-    }
-    res.render('admin');
+  console.log('Session in /admin:', req.session); // Debug session
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+  res.render('admin', { user: req.session.user });
 });
+
+
 
 // Add Product (Admin)
 app.post('/admin/add-product', upload.single('image'), (req, res) => {
