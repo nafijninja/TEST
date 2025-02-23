@@ -118,14 +118,35 @@ db.serialize(() => {
     )
   `);
 });
-//product specifications.
-CREATE TABLE IF NOT EXISTS product_specs (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  product_id INTEGER,
-  section_name TEXT,
-  section_value TEXT,
-  FOREIGN KEY (product_id) REFERENCES products(id)
-);
+
+  // Add the new table for custom sections
+  db.run(`
+    CREATE TABLE IF NOT EXISTS product_specs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      product_id INTEGER,
+      section_name TEXT,
+      section_value TEXT,
+      FOREIGN KEY (product_id) REFERENCES products(id)
+    )
+  `);
+});
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS product_specs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INTEGER,
+    section_name TEXT,
+    section_value TEXT,
+    FOREIGN KEY (product_id) REFERENCES products(id)
+  )
+`, (err) => {
+  if (err) {
+    console.error('Error creating product_specs table:', err);
+  } else {
+    console.log('product_specs table created or already exists.');
+  }
+});
+
 
 // Add Custom Section (Admin)
 app.post('/admin/add-spec', (req, res) => {
