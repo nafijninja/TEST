@@ -40,9 +40,6 @@ app.use(cors()); //Now app is defined, so this works
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(bodyParser.json()); // Parse JSON bodies
 
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Database initialization
 const db = new sqlite3.Database('./database.db', (err) => {
   if (err) {
@@ -548,6 +545,8 @@ app.get('/analytics', async (req, res) => {
      }
    });
 
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 app.get('/wishlist', (req, res) => {      res.status(200).json({ message: 'Wishlist is coming soon CREATED BY NAFIJ PRO !' });    });     // Route for /wishlist/add    
 app.post('/wishlist/add', (req, res) => {      res.status(200).json({ message: 'Wishlist is coming soon CREATED BY NAFIJ PRO !' });    });  
         
