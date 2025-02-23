@@ -8,8 +8,7 @@ const path = require('path');
 const multer = require('multer'); // For file uploads
 const fs = require('fs');
 const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
-//const PORT = process.env.PORT || 3000;
-const PORT = 3000; // PORT SET DIRECTLY
+const PORT = 3000; //PORT
 const cors = require('cors');
      app.use(cors());
 // Environment-based cookie settings
@@ -484,8 +483,7 @@ app.post('/logout', (req, res) => {
     }
   });
 });
-
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}🚀`);
-}); 
+});
