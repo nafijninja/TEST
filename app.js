@@ -9,7 +9,7 @@ const fs = require('fs');
 const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
 app.use(express.static('public'));
 const PORT = process.env.PORT || 3000;
-const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
+
 
 // Environment-based cookie settings
 const isProduction = process.env.NODE_ENV === 'production'; // true in production, false in development
