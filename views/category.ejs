@@ -1,33 +1,24 @@
-<!-- category.ejs - Category page -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= category.name %> - Mobile Dokan</title>
-    <link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= category.name %></title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h1><%= category.name %></h1>
-    <nav>
-        <a href="/">Home</a> |
-        <a href="/admin">Admin Panel</a>
-    </nav>
+  <h1><%= category.name %></h1>
 
-    <div id="product-list">
-        <% if (products.length > 0) { %>
-            <% products.forEach(product => { %>
-                <div class="product">
-                    <img src="<%= product.image %>" alt="<%= product.name %>">
-                    <h3><%= product.name %></h3>
-                    <p><%= product.description %></p>
-                    <p><strong>Price:</strong> $<%= product.price %></p>
-                    <a href="/product/<%= product.id %>">View Details</a>
-                </div>
-            <% }) %>
-        <% } else { %>
-            <p>No products found in this category.</p>
-        <% } %>
-    </div>
+  <!-- List of Products in this Category -->
+  <h2>Products</h2>
+  <ul>
+    <% products.forEach(product => { %>
+      <li>
+        <a href="/product/<%= product.id %>"><%= product.name %></a> - $<%= product.price %>
+      </li>
+    <% }) %>
+  </ul>
+
+  <a href="/">Back to Home</a>
 </body>
 </html
