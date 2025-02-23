@@ -485,6 +485,7 @@ app.post('/logout', (req, res) => {
   });
 });
 // Start server
+const PORT = 3000; // Explicitly set the port to 3000
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}🚀`);
 });
