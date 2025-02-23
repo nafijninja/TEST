@@ -7,8 +7,9 @@ const path = require('path');
 const multer = require('multer'); // For file uploads
 const fs = require('fs');
 const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
-const app = express();app.use(express.static('public', { maxAge: 86400000 })); // Cache for 1 day
+app.use(express.static('public'));
 const PORT = process.env.PORT || 3000;
+const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
 
 // Environment-based cookie settings
 const isProduction = process.env.NODE_ENV === 'production'; // true in production, false in development
@@ -129,7 +130,7 @@ const storage = multer.diskStorage({
     cb(null, 'public/uploads/'); // Save uploaded files in the 'public/uploads' folder
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname); // Unique filename
+    cb(null, Date.now() + '-' + file.originalname); //of Unique filename
   }
 });
 const upload = multer({ storage });
@@ -144,21 +145,6 @@ app.set('view engine', 'ejs');
 
 
 
-const db = new sqlite3.Database('./database.db', (err) => {
-  if (err) {
-    console.error('Database connection error:', err);
-  } else {
-    console.log('Connected to the database.');
-  }
-});
-
-// Keep the connection alive
-setInterval(() => {
-  db.run('SELECT 1', (err) => {
-    if (err) console.error('Database ping error:', err);
-  });
-}, 60 * 1000); // Ping every 60 seconds
-
 app.use(session({
   store: new SQLiteStore({ db: 'sessions.db' }),
   secret: 'your-secret-key',
@@ -166,7 +152,6 @@ app.use(session({
   saveUninitialized: true,
   cookie: { 
     secure: isProduction, // Set to true only in production (HTTPS)
-    maxAge: 1000 * 60 * 60 * 24 // 1 day (increase as needed)
   }
 }));
 
