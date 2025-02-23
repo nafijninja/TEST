@@ -18,6 +18,8 @@ const app = express();
 // Middleware setup
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(bodyParser.json()); // Parse JSON bodies
+app.set('view engine', 'ejs');
+
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -149,15 +151,9 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
-app.set('view engine', 'ejs');
 
 // Session middleware
 // Database initialization
-
-
 
 app.use(session({
   store: new SQLiteStore({ db: 'sessions.db' }),
