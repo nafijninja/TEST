@@ -188,11 +188,12 @@ app.get('/admin', async (req, res) => {
     return res.redirect('/login');
   }
 
-  // Fetch categories from the database
+  // Fetch categories and products from the database
   const categories = await getCategories();
+  const products = await getProducts(); // Fetch products
 
-  // Pass categories and user to the template
-  res.render('admin', { categories, user: req.session.user });
+  // Pass categories, products, and user to the template
+  res.render('admin', { categories, products, user: req.session.user });
 });
 
 
