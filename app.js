@@ -8,18 +8,26 @@ const multer = require('multer'); // For file uploads
 const fs = require('fs');
 const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
 const PORT = process.env.PORT || 3000;
+
 // Environment-based cookie settings
 const isProduction = process.env.NODE_ENV === 'production'; // true in production, false in development
 
-//new sqlite
-const sqlite3 = require('sqlite3').verbose();
+// Initialize express app
+const app = express();
+
+// Middleware setup
+app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(bodyParser.json()); // Parse JSON bodies
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Initialize database connection
 const db = new sqlite3.Database('./database.db', (err) => {
   if (err) {
     console.error('Database connection error:', err);
   } else {
     console.log('Connected to the database.');
-  }
-});
   
 // Create tables if they don't exist
 db.serialize(() => {
