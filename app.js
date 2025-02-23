@@ -8,6 +8,7 @@ const multer = require('multer'); // For file uploads
 const fs = require('fs');
 const SQLiteStore = require('connect-sqlite3')(session); // Correct initialization
 const app = express();
+app.use(express.static('public'));
 const PORT = process.env.PORT || 3000;
 
 // Environment-based cookie settings
@@ -381,6 +382,16 @@ app.post('/admin/add-spec', (req, res) => {
     }
   );
 });
+
+// Fetch product images
+function getProductImages(productId) {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM product_images WHERE product_id = ?', [productId], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+        }
 
 // Product Detail Route
 app.get('/product/:id', async (req, res) => {
