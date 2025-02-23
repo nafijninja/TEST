@@ -67,6 +67,9 @@
         form button:hover {
             background-color: #218838;
         }
+.spec-section p {
+  white-space: pre-line; /* Preserve line breaks (\n) but don't show <br> */
+}
     </style>
 </head>
 <body>
@@ -111,8 +114,8 @@
   <h2>Specifications</h2>
   <% specs.forEach(spec => { %>
     <div class="spec-section">
-      <h3><%= spec.section_name %> 📸</h3>
-      <p><%= spec.section_value.replace(/\n/g, '<br>') %></p>
+      <h3><%= spec.section_name %> ℹ️</h3>
+      <p><%= spec.section_value %></p> <!-- Remove replace(/\n/g, '<br>') -->
       <hr> <!-- বিভাজক লাইন -->
     </div>
   <% }) %>
