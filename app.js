@@ -114,11 +114,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
 
+
+// Session middleware
 app.use(session({
-  store: new SQLiteStore({ db: 'sessions.db' }), // Store sessions in an SQLite database
-  secret: 'your-secret-key', // Secret key to sign the session ID cookie
-  resave: false, // Don't save the session if it wasn't modified
-  saveUninitialized: true, // Save new sessions even if they are unmodified
+  store: new SQLiteStore({ db: 'sessions.db' }), // Use SQLiteStore
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
   cookie: { secure: false } // Set to true if using HTTPS
 }));
 
