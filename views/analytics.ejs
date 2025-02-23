@@ -1,52 +1,20 @@
-<!-- analytics.ejs - Analytics dashboard -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics Dashboard - Mobile Dokan</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-    <h1>Analytics Dashboard</h1>
-    <nav>
-        <a href="/admin">Dashboard</a> |
-        <a href="/analytics">Analytics</a>
-    </nav>
-
-    <div id="analytics">
-        <h2>Statistics</h2>
-        <ul>
-            <li><strong>Total Products:</strong> <%= data.product_count %></li>
-            <li><strong>Total Categories:</strong> <%= data.category_count %></li>
-            <li><strong>Total Orders:</strong> <%= data.order_count %></li>
-            <li><strong>Total Users:</strong> <%= data.user_count %></li>
-        </ul>
-
-        <h2>Visualization</h2>
-        <canvas id="analyticsChart"></canvas>
-        <script>
-            const ctx = document.getElementById('analyticsChart').getContext('2d');
-            const analyticsChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Products', 'Categories', 'Orders', 'Users'],
-                    datasets: [{
-                        label: 'Count',
-                        data: [<%= data.product_count %>, <%= data.category_count %>, <%= data.order_count %>, <%= data.user_count %>],
-                        backgroundColor: ['#28a745', '#ffc107', '#17a2b8', '#dc3545'],
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        </script>
-    </div>
-</body>
-</html
+   <html lang="en">
+   <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Analytics</title>
+   </head>
+   <body>
+     <h1>Analytics Dashboard</h1>
+     <p>Total Products: <%= totalProducts %></p>
+     <p>Total Users: <%= totalUsers %></p>
+     <p>Total Orders: <%= totalOrders %></p>
+     <h2>Most Popular Products</h2>
+     <ul>
+       <% popularProducts.forEach(product => { %>
+         <li><%= product.name %> - <%= product.order_count %> orders</li>
+       <% }) %>
+     </ul>
+   </body>
+   </html
