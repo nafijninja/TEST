@@ -165,7 +165,69 @@ app.post('/admin/add-spec', (req, res) => {
   );
 });
 
-vv
+// Helper functions
+function getProduct(productId) {
+  return new Promise((resolve, reject) => {
+    db.get('SELECT * FROM products WHERE id = ?', [productId], (err, row) => {
+      if (err) reject(err);
+      else resolve(row);
+    });
+  });
+}
+
+function getProductImages(productId) {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM product_images WHERE product_id = ?', [productId], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+}
+
+function getProductVariants(productId) {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM variants WHERE product_id = ?', [productId], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+}
+
+function getProductReviews(productId) {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM reviews WHERE product_id = ?', [productId], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+}
+
+function getProductSpecs(productId) {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM product_specs WHERE product_id = ?', [productId], (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+}
+
+// Product Detail Route
+app.get('/product/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    const product = await getProduct(productId);
+    const productImages = await getProductImages(productId);
+    const variants = await getProductVariants(productId);
+    const reviews = await getProductReviews(productId);
+    const specs = await getProductSpecs(productId);
+
+    res.render('product', { product, productImages, variants, reviews, specs, user: req.session.user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
