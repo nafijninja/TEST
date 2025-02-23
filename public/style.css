@@ -126,3 +126,19 @@ nav a:hover {
 .upload-form input[type="file"] {
     padding: 5px;
     }
+/* Additional Images Styling */
+img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+/* Variants List Styling */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+        }
